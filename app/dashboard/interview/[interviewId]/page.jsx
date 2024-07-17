@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/utils/db";
 import { MockInterview } from "@/utils/schema";
 import { eq } from "drizzle-orm";
-import { Lightbulb, WebcamIcon } from "lucide-react";
+import { Lightbulb, LoaderCircleIcon, WebcamIcon } from "lucide-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 
@@ -13,8 +14,11 @@ function Interview({ params }) {
   const [webCamEnable, setWebCamEnable] = useState(false);
 
   useEffect(() => {
-    console.log(params.interviewId);
-    GetInterviewDetails();
+    const fetchInterviewData = async () => {
+      await GetInterviewDetails();
+      // console.log(interviewData);
+    };
+    fetchInterviewData();
   }, []);
 
   const GetInterviewDetails = async () => {
@@ -33,20 +37,25 @@ function Interview({ params }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
         <div className="flex flex-col my-5 gap-5 ">
           <div className="flex flex-col my-5 gap-5  p-5 rounded-lg border">
-            <h2 className="text-lg">
-              <strong>Job Role/Job Position: </strong>
-              {interviewData.jobPosition}
-            </h2>
+            {interviewData ? (
+              <>
+                <h2 className="text-lg">
+                  <strong>Job Role/Job Position: </strong>
+                  {interviewData.jobPosition}
+                </h2>
+                <h2 className="text-lg">
+                  <strong>Job Description/Tech Stack: </strong>
+                  {interviewData.jobDescription}
+                </h2>
 
-            <h2 className="text-lg">
-              <strong>Job Description/Tech Stack: </strong>
-              {interviewData.jobDescription}
-            </h2>
-
-            <h2 className="text-lg">
-              <strong>Years of Experience: </strong>
-              {interviewData.jobExperience} years
-            </h2>
+                <h2 className="text-lg">
+                  <strong>Years of Experience: </strong>
+                  {interviewData.jobExperience} years
+                </h2>
+              </>
+            ) : (
+              <LoaderCircleIcon className="animate-spin" />
+            )}
           </div>
 
           <div className="p-5 border rounded-lg border-yellow-300 bg-yellow-100">
@@ -100,7 +109,9 @@ function Interview({ params }) {
       </div>
 
       <div className="flex justify-end items-end">
-        <Button>Start Interview</Button>
+        <Link href={`/dashboard/interview/${params.interviewId}/start`}>
+          <Button>Start Interview</Button>
+        </Link>
       </div>
     </div>
   );

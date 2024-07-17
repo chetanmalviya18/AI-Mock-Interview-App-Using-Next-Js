@@ -28,7 +28,7 @@ function AddNewInterview() {
     jobExperience: "",
   });
   const [loading, setLoading] = useState(false);
-  const [JsonResponse, setJsonResponse] = useState([]);
+  const [JsonResponse, setJsonResponse] = useState();
   const { user } = useUser();
   const router = useRouter();
 
@@ -81,12 +81,12 @@ function AddNewInterview() {
         jobDescription: "",
         jobExperience: "",
       });
+      router.push(`/dashboard/interview/${res[0].mockId}`);
     } catch (error) {
       console.error(error.message);
     } finally {
       setLoading(false);
       setOpenDialog(!openDialog);
-      router.push(`/dashboard/interview/${res}`);
     }
   };
 
