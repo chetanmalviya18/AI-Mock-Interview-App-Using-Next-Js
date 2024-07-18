@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
 import Questions from "./_components/Questions";
 import RecordAnswer from "./_components/RecordAnswer";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function StratInterview({ params }) {
   const [interviewData, setInterviewData] = useState();
@@ -47,7 +49,32 @@ function StratInterview({ params }) {
         />
 
         {/*Video/ Audio Recording*/}
-        <RecordAnswer />
+        <RecordAnswer
+          activeQuestionIndex={activeQuestionIndex}
+          mockInterviewQuestion={mockInterviewQuestion}
+          interviewData={interviewData}
+        />
+      </div>
+      <div className="flex flex-col gap-6 mb-6 md:flex-row md:justify-end md:gap-6">
+        {activeQuestionIndex > 0 && (
+          <Button
+            onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
+          >
+            Previous Question
+          </Button>
+        )}
+        {activeQuestionIndex != mockInterviewQuestion?.length - 1 && (
+          <Button
+            onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
+          >
+            Next Question
+          </Button>
+        )}
+        {activeQuestionIndex == mockInterviewQuestion?.length - 1 && (
+          <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+            <Button>End Interview</Button>
+          </Link>
+        )}
       </div>
     </div>
   );
