@@ -62,7 +62,7 @@ function RecordAnswer({
   const updateUserAnswer = async () => {
     setLoading(true);
 
-    const feedbackPrompt = `Question: ${mockInterviewQuestion[activeQuestionIndex]?.Question}, User Answer: ${userAnswer}, Depends on questions and user answer for given interiew question please give us rating for answer and feedback rating as area of improvement if any in just 3 to 5 lines to improve it in JSON format with rating field and feedback. NOTE:- only give json data not other data.`;
+    const feedbackPrompt = `Question: ${mockInterviewQuestion[activeQuestionIndex]?.Question}, User Answer: ${userAnswer}, Depends on questions and user answer for given interiew question please give us rating out of 10 for answer and feedback rating as area of improvement if any in just 3 to 5 lines to improve it in JSON format with rating field and feedback. NOTE:- only give json data not other data.`;
 
     const res = await chatSession.sendMessage(feedbackPrompt);
 
