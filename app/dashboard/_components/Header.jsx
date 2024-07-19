@@ -1,25 +1,30 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
 function Header() {
   const path = usePathname();
+  const { user } = useUser();
 
   return (
     <div className="flex p-4 items-center justify-between bg-secondary shadow-sm">
       <Image src={"/prepview.png"} width={100} height={50} alt="logo" />
 
       <ul className="hidden md:flex gap-6">
-        <li
-          className={`hover:text-darkBlue hover:font-bold transition-all cursor-pointer ${
-            path == "/dashboard" && "text-darkBlue font-bold"
-          }`}
-        >
-          Dashboard
-        </li>
+        <Link href={"/dashboard"}>
+          <li
+            className={`hover:text-darkBlue hover:font-bold transition-all cursor-pointer ${
+              path == "/dashboard" && "text-darkBlue font-bold"
+            }`}
+          >
+            Dashboard
+          </li>
+        </Link>
+
         <li
           className={`hover:text-darkBlue hover:font-bold transition-all cursor-pointer ${
             path == "/dashboard/questions" && "text-darkBlue font-bold"
@@ -42,7 +47,9 @@ function Header() {
           How it Works?
         </li>
       </ul>
-      <UserButton />
+      <div className={`${user ? "" : "hidden"}`}>
+        <UserButton />
+      </div>
     </div>
   );
 }
